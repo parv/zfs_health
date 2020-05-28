@@ -3,7 +3,7 @@
 # Calomel.org
 #     https://calomel.org/zfs_health_check_script.html
 #     FreeBSD ZFS Health Check script
-#     zfs_health.sh @ Version 0.17
+#     zfs_health.sh @ Version 0.18
 
 # Check health of ZFS volumes and drives. On any faults send email.
 
