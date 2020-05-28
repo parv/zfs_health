@@ -3,7 +3,7 @@
 # Calomel.org
 #     https://calomel.org/zfs_health_check_script.html
 #     FreeBSD ZFS Health Check script
-#     zfs_health.sh @ Version 0.18
+#     zfs_health.sh @ Version 0.17
 
 # Check health of ZFS volumes and drives. On any faults send email.
 
@@ -14,9 +14,13 @@ problems=0
 
 # Health - Check if all zfs volumes are in good condition. We are looking for
 # any keyword signifying a degraded or broken array.
+possible_err='(DEGRADED|FAULTED|OFFLINE|UNAVAIL|REMOVED|FAIL|DESTROYED|corrupt|cannot|unrecover)'
 
-condition=$(/sbin/zpool status | egrep -i '(DEGRADED|FAULTED|OFFLINE|UNAVAIL|REMOVED|FAIL|DESTROYED|corrupt|cannot|unrecover)')
-if [ "${condition}" ]; then
+# This line in "zpool status" comes up when a new ZFS version is available and
+# suggested to possibly upgrade to that version.
+not_err='still be used, but some features are unavailable'
+
+if /sbin/zpool status | egrep -i "${possible_err}" | fgrep -v "${not_err}" >/dev/null ; then
         emailSubject="`hostname` - ZFS pool - HEALTH fault"
         problems=1
 fi
