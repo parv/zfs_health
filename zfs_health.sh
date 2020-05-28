@@ -99,12 +99,12 @@ if [ ${problems} -eq 0 ]; then
     #scrubDate=$(date -d "$scrubRawDate" +%s)
 
     ### FreeBSD 11.2 with *nix supported date format
-     scrubRawDate=$(/sbin/zpool status $volume | grep scrub | awk '{print $15 $12 $13}')
-     scrubDate=$(date -j -f '%Y%b%e-%H%M%S' $scrubRawDate'-000000' +%s)
-
-    ### FreeBSD 12.0 with *nix supported date format
-    #scrubRawDate=$(/sbin/zpool status $volume | grep scrub | awk '{print $17 $14 $15}')
+    #scrubRawDate=$(/sbin/zpool status $volume | grep scrub | awk '{print $NF $(NF-3) $(NF-2)}' )
     #scrubDate=$(date -j -f '%Y%b%e-%H%M%S' $scrubRawDate'-000000' +%s)
+
+    ### FreeBSD 11.3 & 12.0 with *nix supported date format
+    scrubRawDate=$(/sbin/zpool status $volume | grep scrub | awk '{print $NF $(NF-3) $(NF-2)}') )
+    scrubDate=$(date -j -f '%Y%b%e-%H%M%S' $scrubRawDate'-000000' +%s)
 
      if [ $(($currentDate - $scrubDate)) -ge $scrubExpire ]; then
         emailSubject="`hostname` - ZFS pool - Scrub Time Expired. Scrub Needed on Volume(s)"
