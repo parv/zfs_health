@@ -102,11 +102,7 @@ if [ ${problems} -eq 0 ]; then
     #scrubRawDate=$(/sbin/zpool status $volume | awk '/scrub/ {print $11" "$12" " $13" " $14" "$15}')
     #scrubDate=$(date -d "$scrubRawDate" +%s)
 
-    ### FreeBSD 11.2 with *nix supported date format
-    #scrubRawDate=$(/sbin/zpool status $volume | awk '/scrub/ {print $NF $(NF-3) $(NF-2)}' )
-    #scrubDate=$(date -j -f '%Y%b%e-%H%M%S' $scrubRawDate'-000000' +%s)
-
-    ### FreeBSD 11.3 & 12.0 with *nix supported date format
+    ### FreeBSD 11.2-12.1 with *nix supported date format
     scrubRawDate=$(/sbin/zpool status $volume | awk '/scrub/ {print $NF $(NF-3) $(NF-2)}') )
     scrubDate=$(date -j -f '%Y%b%e-%H%M%S' $scrubRawDate'-000000' +%s)
 
